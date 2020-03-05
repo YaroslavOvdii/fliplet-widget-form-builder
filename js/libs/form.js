@@ -268,7 +268,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             value = value.slice(0);
           }
 
-          field.value = value;
+          field.value = '';
           $vm.triggerChange(field.name, field.value);
         });
 
