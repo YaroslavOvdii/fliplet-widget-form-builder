@@ -48,79 +48,48 @@ Fliplet.FormBuilder.field('wysiwyg', {
 
       this.value = '';
     },
-    addPlaceHolder: function() {
-      var editor = this.editor;
-      var element = editor.settings.inline ? editor.getElement() : editor.contentAreaContainer;
+    placeholderLabel: function() {
+      var placeholder_text = this.editor.getElement().getAttribute("placeholder") || this.editor.settings.placeholder;
+      var placeholder_attrs = this.editor.settings.placeholder_attrs || {style: {position: 'absolute', top:'5px', left:0, color: '#888', padding: '1%', width:'98%', overflow: 'hidden', 'white-space': 'pre-wrap'} };
+      var contentAreaContainer = this.editor.getContentAreaContainer();
 
-      // set placeholder attribute on the element if its set from settings
-      element.classList.add('plugin-placeholder');
+      tinymce.DOM.setStyle(contentAreaContainer, 'position', 'relative');
 
-      if (element.getAttribute('placeholder') === null) {
-        element.setAttribute('placeholder', editor.settings.placeholder || editor.getElement().getAttribute('placeholder'));
-      }
-
-      // add the styles to head for the placegolder
-      if (document.getElementById('plugin-placeholder') === null) {
-        this.addPlaceholderStyles();
-      }
-
-      // add extra listener since click on the :before element doesnt focus the editor
-      element.addEventListener('click', function() {
-        editor.execCommand('mceFocus', false, element);
-      });
+      // Create label element in the TinyMCE editor
+      this.labelElement = tinymce.DOM.add( contentAreaContainer, this.editor.settings.placeholder_tag || "label", placeholder_attrs, placeholder_text );
     },
-    addPlaceholderStyles: function() {
-      var head = document.head || document.getElementsByTagName('head')[0];
-      var css = document.createElement('style');
-      css.id = 'plugin-placeholder';
-      css.type = 'text/css';
-
-      // If we got not Native Env we shuoldn't have padding-left
-      // Because on the web Env it would look poor
-      if (Fliplet.Env.is('native')) {
-        css.innerHTML = ' \
-        .plugin-placeholder:before { \
-          top: "5px"; \
-          display: none; \
-          position: absolute; \
-          padding-left: 7px; \
-          content: attr(placeholder); \
-          -webkit-margin-before: 1em; \
-          -webkit-margin-after: 1em; \
-          -webkit-margin-start: 0px; \
-          -webkit-margin-end: 0px; \
-          color: #888; \
-        } \
-        .mce-panel.plugin-placeholder:before{ \
-          margin-left: 8px; \
-        } \
-        .plugin-placeholder iframe { z-index: -1; } \
-        .plugin-placeholder.empty:before{ \
-          display: block; \
-        }';
-      } else {
-        css.innerHTML = ' \
-        .plugin-placeholder:before { \
-          top: "5px"; \
-          display: none; \
-          position: absolute; \
-          content: attr(placeholder); \
-          -webkit-margin-before: 1em; \
-          -webkit-margin-after: 1em; \
-          -webkit-margin-start: 0px; \
-          -webkit-margin-end: 0px; \
-          color: #888; \
-        } \
-        .mce-panel.plugin-placeholder:before{ \
-          margin-left: 8px; \
-        } \
-        .plugin-placeholder iframe { z-index: -1; } \
-        .plugin-placeholder.empty:before{ \
-          display: block; \
-        }';
+    placeholderLabelHide: function() {
+      tinymce.DOM.setStyle( this.labelElement, 'display', 'none' );
+    },
+    placeholderLabelShow: function() {
+      tinymce.DOM.setStyle( this.labelElement, 'display', '' );
+    },
+    placeholderOnFocus: function() {
+      if (!this.editor.settings.readonly) {
+        this.placeholderLabelHide();
       }
 
-      head.appendChild(css);
+      this.editor.execCommand('mceFocus', false);
+    },
+    placeholderOnBlur: function() {
+      if (!this.editor.getContent()) {
+        this.placeholderLabelShow();
+      } else {
+        this.placeholderLabelHide();
+      }
+    },
+    addPlaceHolder: function() {
+      // Init placeholder
+      this.placeholderLabel();
+      this.placeholderOnBlur();
+
+      // Add placeholder listeners
+      tinymce.DOM.bind(this.labelElement, 'click', this.placeholderOnFocus);
+      this.editor.on('focus', this.placeholderOnFocus);
+      this.editor.on('blur', this.placeholderOnBlur);
+      this.editor.on('change', this.placeholderOnBlur);
+      this.editor.on('setContent', this.placeholderOnBlur);
+      this.editor.on('keydown', this.placeholderLabelHide);
     }
   },
   mounted: function() {
