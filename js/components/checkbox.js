@@ -6,10 +6,6 @@ Fliplet.FormBuilder.field('checkbox', {
       type: Array,
       default: []
     },
-    defaultValue: {
-      type: String,
-      default: ''
-    },
     options: {
       type: Array,
       default: [
@@ -61,12 +57,11 @@ Fliplet.FormBuilder.field('checkbox', {
     }
   },
   created: function () {
-    if (!!this.defaultValue) {
-      this.value = this.defaultValue.split(/\n/);
-      this.updateValue(this.name, this.value);
-    } else if (!Array.isArray(this.value)) {
-      this.value = [];
-      this.updateValue(this.name, this.value);
+    // We have removed defaultValue variable and set value intead
+    // Because default value wasn't saving in the global data variable ib that case and we couldn't restore default value
+    if (!Array.isArray(this.value)) {
+      this.value = this.value.split(/\n/);
+      this.updateValue();
     }
   }
 });

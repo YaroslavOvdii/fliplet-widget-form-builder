@@ -42,11 +42,9 @@ Fliplet.FormBuilder.field('wysiwyg', {
     onReset: function () {
       if (this.editor) {
         try {
-          return this.editor.setContent('');
+          return this.editor.setContent(this.value);
         } catch (e) {}
       }
-
-      this.value = '';
     },
     placeholderLabel: function () {
       var placeholderText = this.editor.getElement().getAttribute("placeholder") || this.editor.settings.placeholder;

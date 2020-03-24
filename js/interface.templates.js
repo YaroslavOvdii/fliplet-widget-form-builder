@@ -7,7 +7,7 @@ this["Fliplet"]["Widget"]["Templates"]["templates.configurations.buttons"] = Han
 },"useData":true});
 
 this["Fliplet"]["Widget"]["Templates"]["templates.configurations.checkbox"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"form-group\">\n  <label>Default values <small>(One per line)</small></label>\n  <textarea class=\"form-control\" v-model.trim=\"defaultValue\" placeholder=\"Default values\" />\n</div>\n";
+    return "<div class=\"form-group\">\n  <label>Default values <small>(One per line)</small></label>\n  <textarea class=\"form-control\" v-model.trim=\"value\" placeholder=\"Default values\" />\n</div>\n";
 },"useData":true});
 
 this["Fliplet"]["Widget"]["Templates"]["templates.configurations.date"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

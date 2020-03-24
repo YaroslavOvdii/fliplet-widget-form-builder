@@ -263,6 +263,12 @@ Fliplet.Widget.instance('form-builder', function(data) {
         this.fields.forEach(function(field, index) {
           var value = data.fields[index].value;
 
+          // CheckBox default value is saving as a text with /\n/ as a saparator
+          // But for correct work it need to be an array
+          if (field._type === 'flCheckbox' && !Array.isArray(value)) {
+            value = value.split(/\n/);
+          }
+
           // Clone value if it's an array to ensure the original object does not mutate
           if (Array.isArray(value)) {
             value = value.slice(0);
