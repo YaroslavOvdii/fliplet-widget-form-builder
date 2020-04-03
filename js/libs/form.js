@@ -164,7 +164,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
                 fieldData.forEach(function (element) {
                   var match = _.find(field.options, function (option) {
-                    return option.label === fieldData || option.id === fieldData
+                    return option.label === element || option.id === element
                   });
 
                   if (match) {
