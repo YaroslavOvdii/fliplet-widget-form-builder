@@ -9,4 +9,4 @@
   :placeholder="placeholder"
 />
 <p class="text-danger" v-if="$v.value.required === false && $v.value.$dirty">Field is required.</p>
-<p class="text-danger" v-if="$v.value.phone === false && $v.value.$dirty">Phone could contain <b>; , . ( ) - + SPACE * #</b> and numbers.</p>
+<p class="text-danger" v-if="$v.value.phone === false && $v.value.$dirty">Phone could contain <b>; , . ( ) - + * #</b> and numbers.</p>
