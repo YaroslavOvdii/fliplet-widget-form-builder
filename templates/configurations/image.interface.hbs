@@ -7,7 +7,7 @@
   <input class="form-control" type="number" v-model.trim="customHeight" />
 </div>
 <div class="form-group">
-  <label>Select the folder where the images are stored.</label>
+  <label class="selectLabel">Select the folder where the images are stored.</label>
   <div class="btn btn-primary" id="select_folder" v-model="mediaFolderId" v-on:click="openFilePicker">
     <template v-if="mediaFolderId">Replace folder</template>
     <template v-else>Select a folder</template>

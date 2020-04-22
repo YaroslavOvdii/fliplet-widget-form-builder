@@ -164,7 +164,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
 
                 fieldData.forEach(function (element) {
                   var match = _.find(field.options, function (option) {
-                    return option.label === element || option.id === element
+                    return option.label === element || option.id === element;
                   });
 
                   if (match) {
@@ -271,7 +271,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
           } else {
             value = data.fields[index].value;
           }
-          
+
           // Clone value if it's an array to ensure the original object does not mutate
           if (Array.isArray(value)) {
             value = value.slice(0);
@@ -313,7 +313,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             } else {
               field.value = value;
             }
-            
+
             $vm.triggerChange(fieldName, value);
             return true;
           }
@@ -465,7 +465,13 @@ Fliplet.Widget.instance('form-builder', function(data) {
               value = value.replace(/-|\s/g, '');
             }
             if (type === 'flDate') {
-              value = moment(value).format('YYYY-MM-DD');
+              value = moment(value);
+
+              if (moment(value).isValid()) {
+                value = value.format('YYYY-MM-DD');
+              } else {
+                value = null;
+              }
             }
             // Other inputs
             appendField(field.name, value);

@@ -194,7 +194,8 @@ nav>.btn {
 }
 
 .readmore,
-.readless {
+.readless,
+.selectLabel {
   display: block;
 }
 
