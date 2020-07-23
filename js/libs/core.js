@@ -151,6 +151,10 @@ Fliplet.FormBuilder = (function() {
         required: {
           type: Boolean,
           default: false
+        },
+        readonly: {
+          type: Boolean,
+          default: false
         }
       }, component.props);
 
