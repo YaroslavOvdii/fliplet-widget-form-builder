@@ -116,7 +116,8 @@ var app = new Vue({
       readMore: [],
       systemTemplates: [],
       organizationTemplates: [],
-      chooseTemplate: (!formSettings.templateId || formSettings.previewingTemplate !== ''),
+      isTemplateLoaded: !formSettings.templateId,
+      chooseTemplate: false,
       toChangeTemplate: false,
       permissionToChange: false,
       newTemplate: '',
@@ -611,7 +612,13 @@ var app = new Vue({
 
       // Save and close
       $vm.save().then(function() {
-        Fliplet.Widget.complete();
+        if ($vm.isTemplateLoaded) {
+          $(selector).removeClass('is-loading');
+          $vm.isTemplateLoaded = false;
+        } else {
+          Fliplet.Widget.complete();
+        }
+
         Fliplet.Studio.emit('reload-page-preview');
       });
     },
@@ -963,6 +970,10 @@ var app = new Vue({
               container: 'body'
             });
           }, 500);
+        }
+
+        if (!$vm.fields.length) {
+          $vm.useTemplate(1);
         }
       });
     });
