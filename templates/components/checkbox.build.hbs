@@ -3,13 +3,15 @@
 
   <template v-if="readonly">
     <template v-for="(option, index) in options">
-      <p class="form-control-static">\{{ option.label || option.id }}</p>
-      <input
-      type="hidden"
-      :id="name + '-' + index"
-      :name="name"
-      v-model="value"
-      :value="option.id || option.label">
+      <template v-if="value.includes(option.label) || value.includes(option.id)">
+        <p class="form-control-static">\{{ option.label || option.id }}</p>
+        <input
+        type="hidden"
+        :id="name + '-' + index"
+        :name="name"
+        v-model="value"
+        :value="option.id || option.label">
+      </template>
     </template>
   </template>
 
