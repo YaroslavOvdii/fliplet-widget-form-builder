@@ -42,6 +42,11 @@ Fliplet.FormBuilder.field('time', {
   },
   mounted: function() {
     var $vm = this;
+
+    if (this.source !== 'defaultSource') {
+      this.setSourceValue({source: this.source, key: this.key});
+    }
+
     if (!this.value) {
       var now = new Date();
       var hours = now.getHours();

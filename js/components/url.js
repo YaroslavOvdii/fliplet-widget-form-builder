@@ -21,5 +21,10 @@ Fliplet.FormBuilder.field('url', {
       rules.value.required = window.validators.required;
     }
     return rules;
+  },
+  mounted: function () {
+    if (this.source !== 'defaultSource') {
+      this.setSourceValue({source: this.source, key: this.key});
+    }
   }
 });

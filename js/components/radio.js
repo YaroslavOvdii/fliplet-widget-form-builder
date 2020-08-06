@@ -32,5 +32,10 @@ Fliplet.FormBuilder.field('radio', {
       this.value = option.id || option.label;
       this.updateValue();
     }
+  },
+  mounted: function () {
+    if (this.source !== 'defaultSource') {
+      this.setSourceValue({source: this.source, key: this.key});
+    }
   }
 });

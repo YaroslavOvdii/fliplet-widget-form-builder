@@ -27,6 +27,10 @@ Fliplet.FormBuilder.field('select', {
   mounted: function() {
     var $vm = this;
 
+    if (this.source !== 'defaultSource') {
+      this.setSourceValue({source: this.source, key: this.key});
+    }
+    
     if ($vm.source === 'dataSources') {
       Fliplet.DataSources.get().then(function(dataSources) {
         $vm.options = dataSources;

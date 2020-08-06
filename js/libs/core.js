@@ -67,6 +67,60 @@ Fliplet.FormBuilder = (function() {
         component.methods = {};
       }
 
+      component.methods.setSourceValue = function(data) {
+        var result;
+        var $vm = this;
+
+        switch (data.source) {
+          case 'profile':
+            if (!data.key) {
+              throw new Error('A key is required to fetch data from the user\'s profile');
+            }
+
+            result = Fliplet.Profile.get(data.key);
+            break;
+          case 'query':
+            if (!data.key) {
+              throw new Error('A key is required to fetch data from the navigation query parameters');
+            }
+
+            result = Fliplet.Navigate.query[data.key];
+            break;
+          case 'appstorage':
+            if (!data.key) {
+              throw new Error('A key is required to fetch data from the storage');
+            }
+
+            result = Fliplet.App.Storage.get(data.key);
+            break;
+          default:
+            result = this.value;
+        }
+
+        if (!(result instanceof Promise)) {
+          result = Promise.resolve(result);
+        }
+
+        return result.then(function (value) {
+          if (typeof value === 'undefined') {
+            value = '';
+          }
+
+          if (componentName === 'flCheckbox') {
+            value = [value];
+          }
+
+          var isValueChanged = value !== $vm.value;
+
+          $vm.value = value;
+
+          if (isValueChanged) {
+            $vm.updateValue();
+          }
+
+        });
+      }
+
       // Define method to emit the new input value on change
       if (!component.methods.updateValue) {
         component.methods.updateValue = function() {
@@ -161,6 +215,14 @@ Fliplet.FormBuilder = (function() {
         canHide: {
           type: Boolean,
           default: true
+        },
+        source: {
+          type: String,
+          default: 'defaultSource'
+        },
+        key: {
+          type: String,
+          default: ''
         }
       }, component.props);
 
@@ -211,6 +273,11 @@ Fliplet.FormBuilder = (function() {
 
       component.props._fields = {
         type: Array
+      };
+
+      component.props._componentName = {
+        type: String,
+        default: componentName
       };
 
       component.props._idx = {

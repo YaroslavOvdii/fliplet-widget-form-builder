@@ -63,7 +63,7 @@ this["Fliplet"]["Widget"]["Templates"]["templates.components.password"] = Handle
 },"useData":true});
 
 this["Fliplet"]["Widget"]["Templates"]["templates.components.radio"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<template>\n   <div v-if=\"description\" class=\"help-block description\">{{ description }}</div>\n  <template v-for=\"(option, index) in options\">\n    <div class=\"radio radio-icon\">\n      <input\n        type=\"radio\"\n        :id=\"name + '-' + index\"\n        :name=\"name\"\n        v-model=\"value\"\n        :value=\"option.id || option.label\">\n      <label v-on:click=\"clickHandler(option)\">\n        <span class=\"check\"><i class=\"fa fa-circle\"></i></span> {{ option.label || option.id }}\n      </label>\n    </div>\n  </template>\n  <p class=\"text-danger\" v-if=\"$v.value.required === false && $v.value.$dirty\">Field is required.</p>\n</template>\n";
+    return "<template>\n  <div v-if=\"description\" class=\"help-block description\">{{ description }}</div>\n  <template v-for=\"(option, index) in options\">\n    <div class=\"radio radio-icon\">\n      <input\n        type=\"radio\"\n        :id=\"name + '-' + index\"\n        :name=\"name\"\n        v-model=\"value\"\n        :value=\"option.id || option.label\">\n      <label v-on:click=\"clickHandler(option)\">\n        <span class=\"check\"><i class=\"fa fa-circle\"></i></span> {{ option.label || option.id }}\n      </label>\n    </div>\n  </template>\n  <p class=\"text-danger\" v-if=\"$v.value.required === false && $v.value.$dirty\">Field is required.</p>\n</template>\n";
 },"useData":true});
 
 this["Fliplet"]["Widget"]["Templates"]["templates.components.select"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -103,5 +103,5 @@ this["Fliplet"]["Widget"]["Templates"]["templates.components.wysiwyg"] = Handleb
 },"useData":true});
 
 this["Fliplet"]["Widget"]["Templates"]["templates.configurations.radio"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"form-group\">\n  <label>Description</label>\n  <input class=\"form-control\" type=\"text\" v-model.trim=\"description\" placeholder=\"Description text\" />\n</div>\n<div class=\"form-group\">\n  <label>Default value <small>(Enter one of the options you entered above)</small></label>\n  <input class=\"form-control\" type=\"text\" v-model.trim=\"value\" placeholder=\"Default value\" />\n</div>\n";
+    return "<div v-show=\"source === 'defaultSource'\" class=\"form-group\">\n  <label>Default value <small>(Enter one of the options you entered above)</small></label>\n  <input class=\"form-control\" type=\"text\" v-model.trim=\"value\" placeholder=\"Default value\" />\n</div>\n<div class=\"form-group\">\n  <label>Description</label>\n  <input class=\"form-control\" type=\"text\" v-model.trim=\"description\" placeholder=\"Description text\" />\n</div>\n";
 },"useData":true});

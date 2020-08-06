@@ -84,6 +84,25 @@
       </div>
     {{/hasOptions}}
 
+    <div v-if="['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect', 'flDate', 'flTime'].includes(_componentName)" class="form-group cleafix">
+      <div class="col-xs-12">
+        <label>Default value type</label>
+        <select class="form-control" :value="source" v-model="source">
+          <option value="defaultSource">Value</option>
+          <option value="profile">User's profile</option>
+          <option value="storage">App storage</option>
+          <option value="query">Link query</option>
+        </select>
+        <div class="col-xs-12 text-right">
+          <span class="btn-link form-fields-customize">Learn more about these types <i class="text-muted fa fa-question-circle" ref="tooltip" data-viewport=".modal-body" data-toggle="tooltip" data-placement="left" title="Learn more about these types"></i></span>
+        </div>
+        <div v-show="source !== 'defaultSource'">
+          <label>Default key</label>
+          <input class="form-control" type="text" v-model.trim="key" placeholder="Specify property key" />
+        </div>
+      </div>
+    </div>
+
     <div class="col-xs-12">
       {{{ template }}}
     </div>

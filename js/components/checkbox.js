@@ -71,5 +71,10 @@ Fliplet.FormBuilder.field('checkbox', {
       this.value = [];
       this.updateValue(this.name, this.value);
     }
+  },
+  mounted: function () {
+    if (this.source !== 'defaultSource') {
+      this.setSourceValue({source: this.source, key: this.key});
+    }
   }
 });

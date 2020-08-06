@@ -39,6 +39,10 @@ Fliplet.FormBuilder.field('date', {
   mounted: function() {
     var $vm = this;
 
+    if (this.source !== 'defaultSource') {
+      this.setSourceValue({source: this.source, key: this.key});
+    }
+    
     if (Fliplet.Env.get('platform') === 'web') {
       var $el = $(this.$el).find('input.date-picker').datepicker({
         format: "yyyy-mm-dd",
