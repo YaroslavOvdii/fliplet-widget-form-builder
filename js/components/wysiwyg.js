@@ -119,6 +119,10 @@ Fliplet.FormBuilder.field('wysiwyg', {
     }
   },
   mounted: function () {
+    if (this.source !== 'defaultSource') {
+      this.setSourceValue({source: this.source, key: this.key});
+    }
+
     var $vm = this;
     var lineHeight = 40;
 

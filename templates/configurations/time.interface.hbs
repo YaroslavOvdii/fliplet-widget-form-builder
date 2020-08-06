@@ -1,4 +1,4 @@
-<div class="form-group">
+<div v-show="source === 'defaultSource'" class="form-group">
   <label>Default value (current time when empty)</label>
   <input class="form-control" type="time" v-model="value" placeholder="Default value" />
 </div>
