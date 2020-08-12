@@ -77,7 +77,7 @@ Fliplet.FormBuilder = (function() {
               throw new Error('A key is required to fetch data from the user\'s profile');
             }
 
-            result = Fliplet.Profile.get(data.key);
+            result = Fliplet.User.getCachedSession();
             break;
           case 'query':
             if (!data.key) {
@@ -86,7 +86,7 @@ Fliplet.FormBuilder = (function() {
 
             result = Fliplet.Navigate.query[data.key];
             break;
-          case 'appstorage':
+          case 'appStorage':
             if (!data.key) {
               throw new Error('A key is required to fetch data from the storage');
             }
@@ -104,6 +104,22 @@ Fliplet.FormBuilder = (function() {
         return result.then(function (value) {
           if (typeof value === 'undefined') {
             value = '';
+          }
+
+          if (typeof value === 'object') {
+            if (value && value.entries) {
+              var entries = value.entries;
+
+              if (entries.dataSource) {
+                value = entries.dataSource.data[data.key]
+              } else if (entries.saml2) {
+                value = entries.saml2.data[data.key]
+              } else {
+                value = entries.flipletLogin.data[data.key]
+              }
+            } else {
+              value = '';
+            }
           }
 
           if (componentName === 'flCheckbox') {
