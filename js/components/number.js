@@ -93,7 +93,7 @@ Fliplet.FormBuilder.field('number', {
   },
   mounted: function () {
     if (this.source !== 'defaultSource') {
-      this.setSourceValue({source: this.source, key: this.key});
+      this.setSourceValue({ source: this.source, key: this.key });
     }
   }
 });

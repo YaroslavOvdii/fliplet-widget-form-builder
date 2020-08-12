@@ -40,7 +40,7 @@ Fliplet.FormBuilder.field('date', {
     var $vm = this;
 
     if (this.source !== 'defaultSource') {
-      this.setSourceValue({source: this.source, key: this.key});
+      this.setSourceValue({ source: this.source, key: this.key });
     }
     
     if (Fliplet.Env.get('platform') === 'web') {
