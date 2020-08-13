@@ -2,3 +2,13 @@
   <label>Height (px)</label>
   <input class="form-control" type="number" v-model.trim="height" placeholder="e.g. 150" />
 </div>
+<div class="form-group">
+  <label class="selectLabel">Select the folder where the images are stored.</label>
+  <div class="btn btn-primary" id="select_folder" v-model="mediaFolderId" v-on:click="openFilePicker">
+    <template v-if="mediaFolderId">Replace folder</template>
+    <template v-else>Select a folder</template>
+  </div>
+    <div v-if="mediaFolderId" class="selected-folder-holder">
+      <i class="fa fa-folder"></i> Selected folder: <strong>\{{ mediaFolderData.name }}</strong> - <a href="#" v-on:click.prevent="openFileManager">See files</a>
+    </div>
+</div>

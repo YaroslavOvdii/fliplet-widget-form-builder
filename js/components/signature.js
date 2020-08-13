@@ -15,6 +15,18 @@ Fliplet.FormBuilder.field('signature', {
     },
     description: {
       type: String
+    },
+    mediaFolderId: {
+      type: Number,
+      default: null
+    },
+    mediaFolderData: {
+      type: Object,
+      default: {}
+    },
+    mediaFolderNavStack: {
+      type: Array,
+      default: []
     }
   },
   data: {
