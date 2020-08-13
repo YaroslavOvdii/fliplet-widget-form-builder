@@ -77,7 +77,24 @@ Fliplet.FormBuilder = (function() {
               throw new Error('A key is required to fetch data from the user\'s profile');
             }
 
-            result = Fliplet.User.getCachedSession();
+            result = Fliplet.User.getCachedSession()
+              .then(function(session) {
+                if (session && session.entries) {
+                  if (session.entries.dataSource) {
+                    return session.entries.dataSource.data[data.key];
+                  }
+
+                  if (session.entries.saml2) {
+                    return session.entries.saml2.data[data.key];
+                  }
+
+                  if (session.entries.flipletLogin) {
+                    return session.entries.flipletLogin.data[data.key];
+                  }
+                }
+
+                return Fliplet.Profile.get(data.key);
+              })
             break;
           case 'query':
             if (!data.key) {
@@ -88,7 +105,7 @@ Fliplet.FormBuilder = (function() {
             break;
           case 'appStorage':
             if (!data.key) {
-              throw new Error('A key is required to fetch data from the storage');
+              throw new Error('A key is required to fetch data from app storage');
             }
 
             result = Fliplet.App.Storage.get(data.key);
@@ -104,22 +121,6 @@ Fliplet.FormBuilder = (function() {
         return result.then(function (value) {
           if (typeof value === 'undefined') {
             value = '';
-          }
-
-          if (typeof value === 'object') {
-            if (value && value.entries) {
-              var entries = value.entries;
-
-              if (entries.dataSource) {
-                value = entries.dataSource.data[data.key]
-              } else if (entries.saml2) {
-                value = entries.saml2.data[data.key]
-              } else {
-                value = entries.flipletLogin.data[data.key]
-              }
-            } else {
-              value = '';
-            }
           }
 
           if (componentName === 'flCheckbox') {
