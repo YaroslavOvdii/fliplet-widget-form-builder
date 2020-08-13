@@ -864,10 +864,15 @@ Fliplet.Widget.instance('form-builder', function(data) {
               change: function (fn, runOnBind) {
                 return $form.onChange(field.name, fn, runOnBind);
               },
-              toggle: function (isEnabled) {
+              /**
+               * Toggles a field visibility
+               * @param {Boolean} isEnabled - toggles the field visibility on and off
+               * @param {Boolean} revertValueToDefault - defaults to true - Whether the value should be reverted to its original value when showing the field
+               */
+              toggle: function (isEnabled, revertValueToDefault) {
                 field.enabled = !!isEnabled;
 
-                if (!field.enabled) {
+                if (!field.enabled && revertValueToDefault !== false) {
                   JSON.parse(JSON.stringify(data.fields || [])).some(function (f) {
                     if (field.name === f.name) {
                       field.value = f.value;
