@@ -65,6 +65,7 @@ Fliplet.FormBuilder.field('date', {
       this.empty = false;
     }
 
+    this.$emit('_input', this.name, this.value);
     $vm.$v.$reset();
   },
   watch: {
