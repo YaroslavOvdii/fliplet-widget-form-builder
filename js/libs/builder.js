@@ -148,7 +148,13 @@ new Vue({
       organizationName: '',
       isPreviewing: formSettings.previewingTemplate !== '',
       editor: undefined,
-      accessRulesTypes: ['insert']
+      accessRules: [
+        {
+          allow: 'all',
+          enabled: true,
+          type: ['select']
+        }
+      ]
     };
   },
   methods: {
@@ -648,13 +654,7 @@ new Vue({
           entries: [],
           columns: []
         },
-        accessRules: [
-          {
-            allow: 'all',
-            enabled: true,
-            type: $vm.accessRulesTypes
-          }
-        ]
+        accessRules: $vm.accessRules
       };
 
       window.dataSourceProvider =  Fliplet.Widget.open('com.fliplet.data-source-provider', {
@@ -707,6 +707,15 @@ new Vue({
         window.linkProvider = null;
         $vm.triggerSave();
       });
+    },
+    toggleAccessType: function(type, isTypeActive) {
+      var typeIndex = this.accessRules[0].type.indexOf(type);
+
+      if (isTypeActive && typeIndex === -1) {
+        this.accessRules[0].type.push(type);
+      } else if (!isTypeActive && typeIndex > -1) {
+        this.accessRules[0].type.splice(typeIndex, 1);
+      }
     },
     setupCodeEditor: function() {
       var $vm = this;
@@ -832,13 +841,12 @@ new Vue({
     'settings.dataStore': function(value) {
       this.showExtraAdd = value.indexOf('dataSource') > -1;
       this.showExtraEdit = value.indexOf('editDataSource') > -1;
-      this.accessRulesTypes = this.showExtraEdit
-        ? ['insert', 'update']
-        : ['insert'];
+
+      this.toggleAccessType('insert', this.showExtraAdd);
+      this.toggleAccessType('update', this.showExtraEdit);
 
       if (window.dataSourceProvider) {
-        window.dataSourceProvider.close();
-        window.dataSourceProvider = null;
+        window.dataSourceProvider.emit('update-security-rules', { accessRules: this.accessRules });
       }
     },
     'settings.onSubmit': function(array) {
