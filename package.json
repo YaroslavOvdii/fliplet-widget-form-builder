@@ -4,7 +4,7 @@
   "description": "Documentation is available at https://developers.fliplet.com/API/components/form-builder.html",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "eslint:github-action": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -16,8 +16,8 @@
     "url": "https://github.com/Fliplet/fliplet-widget-form-builder/issues"
   },
   "homepage": "https://github.com/Fliplet/fliplet-widget-form-builder#readme",
-  "devDependencies": {
+  "dependencies": {
     "eslint": "^7.12.1",
-    "eslint-config-fliplet": "^1.0.2"
+    "eslint-config-fliplet": "^1.0.5"
   }
 }
