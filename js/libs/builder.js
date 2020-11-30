@@ -708,15 +708,25 @@ new Vue({
       });
     },
     toggleAccessType: function(type, isTypeActive) {
-      this.accessRules.forEach(function(rule, index, accessRules) {
+      var accessRuleIndex = -1;
+      var defaultRule = {
+        allow: 'all',
+        type: type.split()
+      };
+
+      this.accessRules.forEach(function(rule, index) {
         var typeIndex = rule.type.indexOf(type);
 
-        if (isTypeActive && typeIndex === -1) {
-          accessRules[index].type.push(type);
-        } else if (!isTypeActive && typeIndex > -1) {
-          accessRules[index].type.splice(typeIndex, 1);
+        if (typeIndex !== -1) {
+          accessRuleIndex = index;
         }
       });
+
+      if (isTypeActive && accessRuleIndex === -1) {
+        this.accessRules.push(defaultRule);
+      } else if (!isTypeActive && accessRuleIndex > -1) {
+        this.accessRules.splice(accessRuleIndex, 1);
+      }
     },
     setupCodeEditor: function() {
       var $vm = this;
