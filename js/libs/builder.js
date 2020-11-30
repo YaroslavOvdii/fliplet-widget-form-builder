@@ -151,7 +151,6 @@ new Vue({
       accessRules: [
         {
           allow: 'all',
-          enabled: true,
           type: ['select']
         }
       ]
