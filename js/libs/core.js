@@ -360,6 +360,7 @@ Fliplet.FormBuilder = (function() {
                   text: 'Select'
                 });
                 Fliplet.Widget.toggleSaveButton(!!data.length);
+
                 var msg = data.length ? data.length + ' folder selected' : 'no selected folders';
 
                 Fliplet.Widget.info(msg);
@@ -432,6 +433,7 @@ Fliplet.FormBuilder = (function() {
 
             if (match) {
               option.label = rawOption.replace(regex, '').trim();
+
               var value = match[0].substring(1, match[0].length - 1).trim();
 
               option.id = value || option.label;

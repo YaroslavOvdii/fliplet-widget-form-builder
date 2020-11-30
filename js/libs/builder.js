@@ -590,6 +590,7 @@ new Vue({
     useTemplate: function(templateId) {
       Fliplet.Studio.emit('widget-save-label-reset');
       Fliplet.Widget.toggleSaveButton(true);
+
       var $vm = this;
 
       this.updateFormSettings(templateId, false);
@@ -614,11 +615,13 @@ new Vue({
 
       if (this.chooseTemplate && preview) {
         this.settings.previewingTemplate = templateId;
+
         return;
       }
 
       if (this.isPreviewing) {
         this.settings.previewingTemplate = '';
+
         return;
       }
     },
@@ -628,6 +631,7 @@ new Vue({
 
       if (more) {
         $vm.readMore.push(templateId);
+
         return;
       }
 
@@ -767,7 +771,7 @@ new Vue({
             if ($vm.settings.resultHtml) {
               var updatedHtml = $vm.convertVueEventAttributes($vm.settings.resultHtml);
 
-              editor.setContent(updatedHtml, {format: 'raw'});
+              editor.setContent(updatedHtml, { format: 'raw' });
             }
           });
 
@@ -797,6 +801,7 @@ new Vue({
           }
         });
       });
+
       return $html.html();
     },
     loadTemplates: function() {
@@ -994,6 +999,7 @@ new Vue({
     window.emailTemplateEditProvider = null;
     window.generateEmailProvider = null;
     window.linkProvider = null;
+
     var $vm = this;
 
     $vm.settings.name = $vm.settings.name || 'Untitled form';

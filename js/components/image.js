@@ -141,10 +141,12 @@ Fliplet.FormBuilder.field('image', {
             switch (button) {
               case 1:
                 $vm.cameraSource = Camera.PictureSourceType.CAMERA;
+
                 return resolve();
               case 2:
               default:
                 $vm.cameraSource = Camera.PictureSourceType.PHOTOLIBRARY;
+
                 return resolve();
               case 3:
                 return;
@@ -198,8 +200,10 @@ Fliplet.FormBuilder.field('image', {
         loadImage(file, function(img) {
           if (img.type === 'error') {
             $vm.hasCorruptedImage = true;
+
             return;
           }
+
           $vm.hasCorruptedImage = false;
 
           var scaledImage = loadImage.scale(img, options);
@@ -237,6 +241,7 @@ Fliplet.FormBuilder.field('image', {
           if ($vm.cameraSource === Camera.PictureSourceType.PHOTOLIBRARY) {
             $vm.forcedClick = true;
             $($vm.$refs.imageInput).trigger('click');
+
             return Promise.reject('Switch to HTML file input to select files');
           }
 
