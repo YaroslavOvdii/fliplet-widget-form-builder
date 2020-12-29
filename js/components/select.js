@@ -32,6 +32,10 @@ Fliplet.FormBuilder.field('select', {
         $vm.options = dataSources;
       });
     }
+
+    if (this.source !== 'default') {
+      this.setSourceValue({ source: this.source, key: this.key });
+    }
   },
   validations: function() {
     var rules = {

@@ -75,6 +75,76 @@ Fliplet.FormBuilder = (function() {
         };
       }
 
+      component.methods.setSourceValue = function(data) {
+        var result;
+        var $vm = this;
+
+        switch (data.source) {
+          case 'profile':
+            if (!data.key) {
+              throw new Error('A key is required to fetch data from the user\'s profile');
+            }
+
+            result = Fliplet.User.getCachedSession()
+              .then(function(session) {
+                if (session && session.entries) {
+                  if (session.entries.dataSource) {
+                    return session.entries.dataSource.data[data.key];
+                  }
+
+                  if (session.entries.saml2) {
+                    return session.entries.saml2.data[data.key];
+                  }
+
+                  if (session.entries.flipletLogin) {
+                    return session.entries.flipletLogin.data[data.key];
+                  }
+                }
+
+                return Fliplet.Profile.get(data.key);
+              });
+            break;
+          case 'query':
+            if (!data.key) {
+              throw new Error('A key is required to fetch data from the navigation query parameters');
+            }
+
+            result = Fliplet.Navigate.query[data.key];
+            break;
+          case 'appStorage':
+            if (!data.key) {
+              throw new Error('A key is required to fetch data from app storage');
+            }
+
+            result = Fliplet.App.Storage.get(data.key);
+            break;
+          default:
+            result = this.value;
+        }
+
+        if (!(result instanceof Promise)) {
+          result = Promise.resolve(result);
+        }
+
+        return result.then(function(value) {
+          if (typeof value === 'undefined') {
+            value = '';
+          }
+
+          if (componentName === 'flCheckbox') {
+            value = [value];
+          }
+
+          var isValueChanged = value !== $vm.value;
+
+          $vm.value = value;
+
+          if (isValueChanged) {
+            $vm.updateValue();
+          }
+        });
+      };
+
       // Define method to highlight Error on blur form field
       component.methods.highlightError = function() {
         var $vm = this;
@@ -123,6 +193,14 @@ Fliplet.FormBuilder = (function() {
         return option ? (option.label || option.id) : this.value;
       };
 
+      if (!component.mounted) {
+        component.mounted = function() {
+          if (this.source !== 'default') {
+            this.setSourceValue({ source: this.source, key: this.key });
+          }
+        };
+      }
+
       var fieldContext = $('html').hasClass('context-build') ? 'field' : 'interface';
 
       component.template = templates['templates.components.' + fieldContext]({
@@ -161,6 +239,14 @@ Fliplet.FormBuilder = (function() {
         canHide: {
           type: Boolean,
           default: true
+        },
+        source: {
+          type: String,
+          default: 'default'
+        },
+        key: {
+          type: String,
+          default: ''
         }
       }, component.props);
 
@@ -189,6 +275,12 @@ Fliplet.FormBuilder = (function() {
 
       // On submit event
       component.methods._onSubmit = function() {
+        debugger;
+
+        if (!this.key && this._componentsWithPersonalization.includes(this._componentName) && this.source !== 'default') {
+          return 'Key field is required';
+        }
+
         if (this._fieldNameError || this._fieldLabelError) {
           return;
         }
@@ -211,6 +303,21 @@ Fliplet.FormBuilder = (function() {
 
       component.props._fields = {
         type: Array
+      };
+
+      component.props._componentName = {
+        type: String,
+        default: componentName
+      };
+
+      component.props._componentsWithDescription = {
+        type: Array,
+        default: ['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect', 'flDate', 'flTime', 'flStarRating', 'flSignature', 'flImage', 'flFile']
+      };
+
+      component.props._componentsWithPersonalization = {
+        type: Array,
+        default: ['flInput', 'flCheckbox', 'flRadio', 'flEmail', 'flNumber', 'flTelephone', 'flUrl', 'flTextarea', 'flWysiwyg', 'flSelect', 'flDate', 'flTime']
       };
 
       component.props._idx = {
