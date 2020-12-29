@@ -195,9 +195,7 @@ Fliplet.FormBuilder = (function() {
 
       if (!component.mounted) {
         component.mounted = function() {
-          if (this.source !== 'default') {
-            this.setSourceValue({ source: this.source, key: this.key });
-          }
+          this.setSourceValue({ source: this.source, key: this.key });
         };
       }
 
@@ -275,8 +273,6 @@ Fliplet.FormBuilder = (function() {
 
       // On submit event
       component.methods._onSubmit = function() {
-        debugger;
-
         if (!this.key && this._componentsWithPersonalization.includes(this._componentName) && this.source !== 'default') {
           return 'Key field is required';
         }
