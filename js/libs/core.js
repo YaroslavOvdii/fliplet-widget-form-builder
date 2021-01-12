@@ -83,7 +83,7 @@ Fliplet.FormBuilder = (function() {
        *  Where source - is defining the value  source type
        *  And key - tell us what key in the source we should take as a value
        *
-       * @return {void} - this function is not returns anything but updated value directlly with the help of the updateValue function.
+       * @return {void} - this method does not return anything but updates the value directly on the target field.
        */
       component.methods.setValueFromDefaultSettings = function(data) {
         var result;
