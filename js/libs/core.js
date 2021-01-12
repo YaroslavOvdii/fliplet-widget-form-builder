@@ -75,7 +75,17 @@ Fliplet.FormBuilder = (function() {
         };
       }
 
-      component.methods.setSourceValue = function(data) {
+      /**
+       * This function is responsible personalizating a default value when we need to get it from user personalized data
+       * For example: set default value to the user email
+       *
+       * @param {Object} data - an object with source and key properties
+       *  Where source - is defining the value  source type
+       *  And key - tell us what key in the source we should take as a value
+       *
+       * @return {void} - this function is not returns anything but updated value directlly with the help of the updateValue function.
+       */
+      component.methods.setValueFromDefaultSettings = function(data) {
         var result;
         var $vm = this;
 
@@ -195,7 +205,7 @@ Fliplet.FormBuilder = (function() {
 
       if (!component.mounted) {
         component.mounted = function() {
-          this.setSourceValue({ source: this.source, key: this.key });
+          this.setValueFromDefaultSettings({ source: this.defaultValueSource, key: this.defaultValueKey });
         };
       }
 
@@ -238,11 +248,11 @@ Fliplet.FormBuilder = (function() {
           type: Boolean,
           default: true
         },
-        source: {
+        defaultValueSource: {
           type: String,
           default: 'default'
         },
-        key: {
+        defaultValueKey: {
           type: String,
           default: ''
         }
@@ -273,7 +283,7 @@ Fliplet.FormBuilder = (function() {
 
       // On submit event
       component.methods._onSubmit = function() {
-        if (!this.key && this._componentsWithPersonalization.includes(this._componentName) && this.source !== 'default') {
+        if (!this.defaultValueKey && this._componentsWithPersonalization.includes(this._componentName) && this.defaultValueSource !== 'default') {
           return 'Key field is required';
         }
 

@@ -59,8 +59,8 @@ Fliplet.FormBuilder.field('date', {
       this.datePicker.datepicker('setDate', this.value || new Date());
     }
 
-    if (this.source !== 'default') {
-      this.setSourceValue({ source: this.source, key: this.key });
+    if (this.defaultValueSource !== 'default') {
+      this.setValueFromDefaultSettings({ source: this.defaultValueSource, key: this.defaultValueKey });
     }
 
     if (!this.value || this.autofill === 'always') {

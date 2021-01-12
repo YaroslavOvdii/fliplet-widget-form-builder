@@ -33,8 +33,8 @@ Fliplet.FormBuilder.field('select', {
       });
     }
 
-    if (this.source !== 'default') {
-      this.setSourceValue({ source: this.source, key: this.key });
+    if (this.defaultValueSource !== 'default') {
+      this.setValueFromDefaultSettings({ source: this.defaultValueSource, key: this.defaultValueKey });
     }
   },
   validations: function() {
