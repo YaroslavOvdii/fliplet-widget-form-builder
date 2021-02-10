@@ -269,6 +269,18 @@ Fliplet.FormBuilder.field('image', {
         this.processImage(files.item(i), true);
       }
     },
+    onImageClick: function(index) {
+      var imagesData = {
+        images: _.map(this.value, function(imgURL) {
+          return { url: imgURL };
+        }),
+        options: {
+          index: index
+        }
+      };
+
+      Fliplet.Navigate.previewImages(imagesData);
+    },
     drawImagesAfterInit: function() {
       var $vm = this;
 
