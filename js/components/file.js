@@ -57,7 +57,7 @@ Fliplet.FormBuilder.field('file', {
       var $vm = this;
       var isFileDataLoaded = false;
       var filesID = _.map(this.value, function(fileURL) {
-        if (typeof fileURL === 'string') {
+        if (typeof fileURL === 'string' && /v1\/media\/files\/([0-9]+)/.test(fileURL)) {
           return +fileURL.match(/v1\/media\/files\/([0-9]+)/)[1];
         }
 
@@ -75,9 +75,7 @@ Fliplet.FormBuilder.field('file', {
         fields: ['name', 'url', 'metadata', 'createdAt']
       }).then(function(files) {
         $vm.value = files;
-      }).catch(function(err) {
-        console.log(Fliplet.parseError(err));
-      });
+      }).catch(function() {});
     }
   },
   destroyed: function() {
@@ -99,9 +97,9 @@ Fliplet.FormBuilder.field('file', {
     /**
      * Format bytes as human-readable text.
      *
-     * @param { Number } bytes size in bytes
+     * @param {Number} bytes size in bytes
      *
-     * @return { String } Formatted size i.e 1.2MiB
+     * @return {String} Formatted size i.e 1.2MB
      */
     humanFileSize: function(bytes) {
       var unitCapacity = 1000;

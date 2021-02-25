@@ -282,6 +282,10 @@ Fliplet.FormBuilder.field('image', {
       Fliplet.Navigate.previewImages(imagesData);
     },
     drawImagesAfterInit: function() {
+      if (this.readonly) {
+        return;
+      }
+
       var $vm = this;
 
       $vm.value.forEach(function(image, index) {
