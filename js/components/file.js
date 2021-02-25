@@ -56,7 +56,7 @@ Fliplet.FormBuilder.field('file', {
     if (this.readonly) {
       var $vm = this;
       var isFileDataLoaded = false;
-      var filesID = _.map(this.value, function(fileURL) {
+      var fileIDs = _.map(this.value, function(fileURL) {
         if (typeof fileURL === 'string' && /v1\/media\/files\/([0-9]+)/.test(fileURL)) {
           return +fileURL.match(/v1\/media\/files\/([0-9]+)/)[1];
         }
@@ -71,7 +71,7 @@ Fliplet.FormBuilder.field('file', {
       }
 
       Fliplet.Media.Files.getAll({
-        files: filesID,
+        files: fileIDs,
         fields: ['name', 'url', 'metadata', 'createdAt']
       }).then(function(files) {
         $vm.value = files;
