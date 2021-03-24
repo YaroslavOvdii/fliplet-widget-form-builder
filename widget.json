@@ -16,7 +16,7 @@
       "fliplet-datasources",
       "codemirror",
       "bootstrap",
-      "tinymce",
+      "tinymce:5.7.0",
       "moment"
     ],
     "assets": [
@@ -91,7 +91,7 @@
       "fliplet-media",
       "font-awesome",
       "moment",
-      "tinymce",
+      "tinymce:5.7.0",
       "fliplet-session"
     ],
     "assets": [
@@ -103,6 +103,14 @@
       "vendor/bootstrap-datepicker3.css",
       "vendor/bootstrap-datepicker.js",
       "vendor/signature-pad.js",
+      "vendor/tinymce/theme.min.js",
+      "vendor/tinymce/mentions.min.js",
+      "vendor/tinymce/lists.min.js",
+      "vendor/tinymce/autolink.min.js",
+      "vendor/tinymce/autosave.min.js",
+      "vendor/tinymce/icons.min.js",
+      "vendor/tinymce/content.min.css",
+      "vendor/tinymce/content.mobile.min.css",
 
       "js/components/input.js",
       "js/components/email.js",

@@ -132,26 +132,37 @@ Fliplet.FormBuilder.field('wysiwyg', {
 
     var config = {
       target: this.$refs.textarea,
-      theme: 'modern',
       readonly: this.readonly,
+      formats: {
+        removeformat: [
+          {
+            selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins',
+            remove: 'all',
+            split: true,
+            block_expand: true,
+            expand: false,
+            deep: true
+          },
+          { selector: 'span', attributes: ['style', 'class'], remove: 'empty', split: true, expand: false, deep: true },
+          { selector: '*', attributes: ['style', 'class'], split: false, expand: false, deep: true }
+        ]
+      },
       mobile: {
-        theme: this.readonly
-          ? 'silver'
-          : 'mobile',
+        theme: 'mobile',
         plugins: [ 'autosave', 'lists', 'autolink' ],
         toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
       },
       plugins: [
-        'advlist autolink lists link directionality',
-        'autoresize fullscreen code paste'
-      ].join(' '),
+        'advlist autolink lists link image charmap print preview anchor ',
+        'autoresize fullscreen searchreplace visualblocks code ',
+        'table paste code wordcount'
+      ],
       toolbar: this.readonly
         ? false
-        : [
-          'bold italic underline',
-          'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
-          'ltr rtl | link | removeformat code fullscreen'
-        ].join(' | '),
+        : 'bold italic underline | alignleft aligncenter ' +
+          'alignright alignjustify | bullist numlist outdent indent | ' +
+          'ltr rtl | link | code removeformat | formatselect | fullscreen',
+      toolbar_sticky: true,
       image_advtab: true,
       menubar: false,
       statusbar: false,
@@ -163,8 +174,8 @@ Fliplet.FormBuilder.field('wysiwyg', {
       inline: false,
       resize: false,
       autoresize_bottom_margin: 0,
-      autoresize_max_height: lineHeight * this.rows,
-      autoresize_min_height: lineHeight * this.rows,
+      max_height: lineHeight * this.rows,
+      min_height: lineHeight * this.rows,
       autofocus: false,
       branding: false,
       setup: function(editor) {
