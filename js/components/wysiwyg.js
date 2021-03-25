@@ -133,20 +133,6 @@ Fliplet.FormBuilder.field('wysiwyg', {
     var config = {
       target: this.$refs.textarea,
       readonly: this.readonly,
-      formats: {
-        removeformat: [
-          {
-            selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins',
-            remove: 'all',
-            split: true,
-            block_expand: true,
-            expand: false,
-            deep: true
-          },
-          { selector: 'span', attributes: ['style', 'class'], remove: 'empty', split: true, expand: false, deep: true },
-          { selector: '*', attributes: ['style', 'class'], split: false, expand: false, deep: true }
-        ]
-      },
       mobile: {
         theme: 'mobile',
         plugins: [ 'autosave', 'lists', 'autolink' ],
