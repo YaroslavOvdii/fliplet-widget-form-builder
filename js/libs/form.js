@@ -480,45 +480,60 @@ Fliplet.Widget.instance('form-builder', function(data) {
           }
         });
 
-        function showFormInvalidMessage(message) {
-          switch (typeof message) {
-            case 'string':
-            case 'object':
-              if (Array.isArray(message)) {
-                message = '';
-              }
-
-              var errorMessage = message ? message : 'Please fill in all required fields';
-
-              debugger;
-              return Fliplet.UI.Toast(errorMessage);
-            default:
-              return Promise.reject();
-          }
+        /**
+         * Showing an error message
+         * 
+         * @param {String} errorMessage - an error message that we should show to the user
+         *  if its empty string show default message
+         * @returns {void} shows a toast message to users
+         */
+        function showValidationMessage(errorMessage) {
+          errorMessage = errorMessage || 'Please complete all required fields.';
+          Fliplet.UI.Toast(errorMessage);
         }
 
+        /**
+         * This method will decide what we will do after isFormInvalid hook
+         * 
+         * @returns {Promise} With this logic:
+         *  1. In case there was no listener on isFormInvalid hook we will show the toast
+         *     with default message
+         *  2. In case when listener was resolved with Promise.resolve() we allow user to submit invalid form
+         *     and will not show the toast
+         *  3. In case when listener was resolved with Promise.reject() we will not show the toast
+         *     and not allow form to submit
+         *  4. In case when listener was resolved with Promise.reject('') we will show the toast with default text
+         *  5. In case when listener was resolved with Promise.reject('error text') we will show the toast
+         *     with 'error text' message
+         */
         function onFormInvalid() {
           return new Promise(function(resolve, reject) {
             Fliplet.Hooks.run('isFormInvalid', invalidFields)
               .then(function(result) {
-                return result.length ? resolve() : showFormInvalidMessage(result);
+                if (!result.length) {
+                  showValidationMessage('');
+
+                  return reject();
+                }
+                
+                return resolve();
               })
               .catch(function(responce) {
-                showFormInvalidMessage(responce);
+                switch (typeof responce) {
+                  case 'string':
+                    return showValidationMessage(responce);
+                  default:
+                    return reject();
+                }
               })
           })
         }
-
-        // if(!$vm.isFormValid){
-        //   return;
-        // }
 
         return $vm.isFormValid
           ? Promise.resolve
           : onFormInvalid()
         .then(function() {
-          debugger;
-          this.isSending = true;
+          $vm.isSending = true;
 
           function appendField(name, value) {
             if (Array.isArray(formData[name])) {
@@ -530,7 +545,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             }
           }
   
-          var errorFields = Object.keys(this.errors || {});
+          var errorFields = Object.keys($vm.errors);
           var fieldErrors = [];
           if (errorFields.length) {
             errorFields.forEach(function (fieldName) {
@@ -542,7 +557,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             return;
           }
   
-          this.fields.forEach(function(field) {
+          $vm.fields.forEach(function(field) {
             var value = field.value;
             var type = field._type;
   
@@ -691,7 +706,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
         })
         .catch(function() {
           // Silent fail
-        })
+        });
       },
       loadEntryForUpdate: function(fn) {
         var $vm = this;
