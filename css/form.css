@@ -716,9 +716,33 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translate(0, -50%);font-size: 34px;
+  transform: translate(0, -50%);
+  font-size: 34px;
   min-width: 30px;
   color: #666;
+}
+
+.file-holder.editable {
+  padding: 0;
+  list-style-type: none;
+  width: 100%;
+}
+
+.file-holder.editable .file-title {
+  max-width: calc(100% - 35px);
+  word-break: break-all;
+}
+
+.file-holder.editable .file-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.file-holder.editable .file-icon .fa {
+  color:red;
+  opacity: 0.3;
+  font-size: 34px;
+  right: 0;
 }
 
 .image-gallery {
