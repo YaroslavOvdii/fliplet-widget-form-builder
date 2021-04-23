@@ -17,7 +17,7 @@
   <div class="row">
     <ul class="file-holder editable">
       <li class="file-item" v-for="(file, index) in value">
-        <div @click="onFileItemClick(file.url)">
+        <div @click="onFileItemClick(file.url)" class="file-content">
           <div class="file-title" >\{{ file.name }}</div>
           <div class="file-info">
             <span class="file-info-uploaded">
