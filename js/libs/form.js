@@ -485,25 +485,25 @@ Fliplet.Widget.instance('form-builder', function(data) {
          * 
          * @param {String} errorMessage - an error message that we should show to the user
          *  if its empty string show default message
-         * @returns {void} shows an toast message to users
+         * @returns {void} shows a toast message to users
          */
-        function showFormInvalidMessage(errorMessage) {
+        function showValidationMessage(errorMessage) {
           errorMessage = errorMessage || 'Please complete all required fields.';
           Fliplet.UI.Toast(errorMessage);
         }
 
         /**
-         * This method will decide whet we will do after isFormInvalid hook
+         * This method will decide what we will do after isFormInvalid hook
          * 
          * @returns {Promise} With this logic:
-         *  1. In case there was no listener on isFormInvalid hook we will show the toast message
+         *  1. In case there was no listener on isFormInvalid hook we will show the toast
          *     with default message
          *  2. In case when listener was resolved with Promise.resolve() we allow user to submit invalid form
-         *     and will not show toast message
-         *  3. In case when listener was resolved with Promise.reject() we will not show a toast message
+         *     and will not show the toast
+         *  3. In case when listener was resolved with Promise.reject() we will not show the toast
          *     and not allow form to submit
-         *  4. In case when listener was resolved with Promise.reject('') we will show a toast message with default text
-         *  5. In case when listener was resolved with Promise.reject('error text') we will show a toast message
+         *  4. In case when listener was resolved with Promise.reject('') we will show the toast with default text
+         *  5. In case when listener was resolved with Promise.reject('error text') we will show the toast
          *     with 'error text' message
          */
         function onFormInvalid() {
@@ -511,7 +511,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
             Fliplet.Hooks.run('isFormInvalid', invalidFields)
               .then(function(result) {
                 if (!result.length) {
-                  showFormInvalidMessage('');
+                  showValidationMessage('');
 
                   return reject();
                 }
@@ -521,7 +521,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
               .catch(function(responce) {
                 switch (typeof responce) {
                   case 'string':
-                    return showFormInvalidMessage(responce);
+                    return showValidationMessage(responce);
                   default:
                     return reject();
                 }
