@@ -26,7 +26,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
   },
   computed: {
     isInterface: function() {
-      return Fliplet.Env.get('interface');
+      return Fliplet.Env.get('interact') || Fliplet.Env.get('interface');
     }
   },
   watch: {
@@ -133,36 +133,56 @@ Fliplet.FormBuilder.field('wysiwyg', {
     var config = {
       target: this.$refs.textarea,
       readonly: this.readonly,
-      mobile: {
-        theme: 'mobile',
-        plugins: [ 'autosave', 'lists', 'autolink' ],
-        toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
+      height: lineHeight * this.rows,
+      menubar: false,
+      formats: {
+        removeformat: [
+          // Remove block containers
+          {
+            selector: 'div,main,article,aside,header,footer',
+            remove: 'all',
+            split: false,
+            expand: false,
+            block_expand: true,
+            deep: true
+          },
+          // Remove inline containers
+          {
+            selector: 'b,strong,em,i,font,u,strike,sub,sup,dfn,code,samp,kbd,var,cite,mark,q,del,ins,span',
+            remove: 'all',
+            split: true,
+            expand: false,
+            deep: true
+          },
+          // Remove attributes
+          {
+            selector: '*',
+            attributes: ['style', 'class', 'id'],
+            split: false,
+            expand: false,
+            deep: true
+          }
+        ]
       },
       plugins: [
-        'advlist autolink lists link image charmap print preview anchor ',
-        'autoresize fullscreen searchreplace visualblocks code ',
-        'table paste code wordcount'
+        'advlist autolink lists link searchreplace print directionality',
+        'table paste pasteplaintext code'
       ],
+      statusbar: false,
       toolbar: this.readonly
         ? false
-        : 'bold italic underline | alignleft aligncenter ' +
-          'alignright alignjustify | bullist numlist outdent indent | ' +
-          'ltr rtl | link | code removeformat | formatselect | fullscreen',
-      toolbar_sticky: true,
-      image_advtab: true,
-      menubar: false,
-      statusbar: false,
+        : ['bold italic underline | alignleft aligncenter alignright alignjustify',
+          'bullist numlist outdent indent | ltr rtl',
+          'link | pasteplaintext removeformat | code | formatselect'].join(' | '),
+      mobile: {
+        toolbar_mode: 'sliding',
+        plugins: ''
+      },
       // Prevent URLs from being altered
       // https://stackoverflow.com/questions/3796942
       relative_urls: false,
       remove_script_host: false,
-      convert_urls: true,
-      inline: false,
-      resize: false,
-      autoresize_bottom_margin: 0,
-      max_height: lineHeight * this.rows,
-      min_height: lineHeight * this.rows,
-      autofocus: false,
+      convert_urls: false,
       branding: false,
       setup: function(editor) {
         $vm.editor = editor;
@@ -218,7 +238,9 @@ Fliplet.FormBuilder.field('wysiwyg', {
         field: this,
         config: config
       }).then(function() {
-        tinymce.init(config);
+        if (!$vm.isInterface) {
+          tinymce.init(config);
+        }
       });
     });
 
