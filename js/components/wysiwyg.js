@@ -178,6 +178,11 @@ Fliplet.FormBuilder.field('wysiwyg', {
         toolbar_mode: 'sliding',
         plugins: ''
       },
+      paste_preprocess: function(plugin, args) {
+        // Clean up content before pasting
+        args.content = args.content
+          .replace(/ contenteditable="(true|false)"/g, '');
+      },
       // Prevent URLs from being altered
       // https://stackoverflow.com/questions/3796942
       relative_urls: false,
