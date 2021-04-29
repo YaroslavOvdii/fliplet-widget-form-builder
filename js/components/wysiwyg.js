@@ -193,7 +193,10 @@ Fliplet.FormBuilder.field('wysiwyg', {
         $vm.editor = editor;
 
         editor.on('init', function() {
-          $vm.addPlaceholder();
+          if ($vm.isInterface) {
+            $vm.addPlaceholder();
+          }
+
           $vm.addBulletedListShortcutsWindows();
 
           if ($vm.defaultValueSource !== 'default') {
