@@ -819,8 +819,6 @@ new Vue({
       }
     },
     'section': function(value) {
-      var $vm = this;
-
       if (value === 'settings') {
         changeSelectText();
       }
