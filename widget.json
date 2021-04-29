@@ -29,6 +29,8 @@
       "js/libs/templates.js",
       "vendor/bootstrap-datepicker3.css",
       "vendor/bootstrap-datepicker.js",
+      "vendor/jquery.plugin.min.js",
+      "vendor/jquery.timeentry.min.js",
       "vendor/signature-pad.js",
 
       "js/components/input.js",
@@ -101,6 +103,8 @@
       "js/libs/core.js",
       "vendor/bootstrap-datepicker3.css",
       "vendor/bootstrap-datepicker.js",
+      "vendor/jquery.plugin.min.js",
+      "vendor/jquery.timeentry.min.js",
       "vendor/signature-pad.js",
 
       "js/components/input.js",
