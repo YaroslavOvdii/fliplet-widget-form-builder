@@ -16,6 +16,7 @@
       "fliplet-datasources",
       "codemirror",
       "bootstrap",
+      "tinymce",
       "moment"
     ],
     "assets": [
