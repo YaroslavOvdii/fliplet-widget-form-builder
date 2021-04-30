@@ -176,7 +176,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
           'link | pasteplaintext removeformat | code | formatselect'].join(' | '),
       mobile: {
         toolbar_mode: 'sliding',
-        plugins: ''
+        plugins: 'mention'
       },
       paste_preprocess: function(plugin, args) {
         // Clean up content before pasting
