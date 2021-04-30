@@ -170,7 +170,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
       plugins: $vm.isInterface
         ? false
         : ['advlist autolink lists link searchreplace print directionality',
-        'table paste pasteplaintext code'],
+          'table paste pasteplaintext code'],
       statusbar: false,
       toolbar: this.readonly || $vm.isInterface
         ? ['bold italic underline alignleft aligncenter alignright alignjustify'].join(' | ')
