@@ -256,7 +256,6 @@
 				var $element = $(_this.render(item, i));
 
 				$element.html($element.html().replace($element.text(), _this.highlighter($element.text())));
-				console.log($element.html());
 
 				$.each(items[i], function (key, val) {
 					$element.attr('data-' + key, val);
