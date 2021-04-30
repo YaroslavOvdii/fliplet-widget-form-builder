@@ -26,7 +26,10 @@ Fliplet.FormBuilder.field('wysiwyg', {
   },
   computed: {
     isInterface: function() {
-      return Fliplet.Env.get('interact') || Fliplet.Env.get('interface');
+      return Fliplet.Env.get('interface');
+    },
+    isInteract: function() {
+      return Fliplet.Env.get('interact');
     }
   },
   watch: {
@@ -164,13 +167,13 @@ Fliplet.FormBuilder.field('wysiwyg', {
           }
         ]
       },
-      plugins: [
-        'advlist autolink lists link searchreplace print directionality',
-        'table paste pasteplaintext code'
-      ],
-      statusbar: false,
-      toolbar: this.readonly
+      plugins: $vm.isInterface
         ? false
+        : ['advlist autolink lists link searchreplace print directionality',
+          'table paste pasteplaintext code'],
+      statusbar: false,
+      toolbar: this.readonly || $vm.isInterface
+        ? ['bold italic underline alignleft aligncenter alignright alignjustify'].join(' | ')
         : ['bold italic underline | alignleft aligncenter alignright alignjustify',
           'bullist numlist outdent indent | ltr rtl',
           'link | pasteplaintext removeformat | code | formatselect'].join(' | '),
@@ -246,7 +249,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
         field: this,
         config: config
       }).then(function() {
-        if (!$vm.isInterface) {
+        if (tinymce && !$vm.isInteract) {
           tinymce.init(config);
         }
       });

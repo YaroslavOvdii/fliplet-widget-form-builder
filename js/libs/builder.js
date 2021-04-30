@@ -750,6 +750,55 @@ new Vue({
         this.accessRules.splice(accessRuleIndex, 1);
       }
     },
+    setupCodeEditor: function() {
+      var $vm = this;
+
+      tinymce.init({
+        target: $vm.$refs.resulthtml,
+        theme: 'modern',
+        mobile: {
+          theme: 'mobile',
+          plugins: ['autosave', 'lists', 'autolink'],
+          toolbar: ['bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat']
+        },
+        plugins: [
+          'advlist autolink lists link directionality',
+          'autoresize fullscreen code paste'
+        ].join(' '),
+        toolbar: [
+          'bold italic underline',
+          'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+          'ltr rtl | link | removeformat code fullscreen'
+        ].join(' | '),
+        image_advtab: true,
+        menubar: false,
+        statusbar: false,
+        inline: false,
+        resize: false,
+        autoresize_bottom_margin: 5,
+        autofocus: false,
+        branding: false,
+        valid_elements: '*[*]',
+        allow_script_urls: true,
+        min_height: 200,
+        setup: function(editor) {
+          editor.on('init', function() {
+            $vm.resultEditor = editor;
+
+            // initialize value if it was set prior to initialization
+            if ($vm.settings.resultHtml) {
+              var updatedHtml = $vm.convertVueEventAttributes($vm.settings.resultHtml);
+
+              editor.setContent(updatedHtml, { format: 'raw' });
+            }
+          });
+
+          editor.on('change', function() {
+            $vm.settings.resultHtml = editor.getContent();
+          });
+        }
+      });
+    },
     // Converts @event attributes to v-on:event
     convertVueEventAttributes: function(html) {
       var $html = $('<div/>').append(html);
@@ -819,8 +868,13 @@ new Vue({
       }
     },
     'section': function(value) {
+      var $vm = this;
+
       if (value === 'settings') {
+        $vm.setupCodeEditor();
         changeSelectText();
+      } else if ($vm.$refs.resulthtml) {
+        $($vm.$refs.resulthtml).tinymce().remove();
       }
     },
     'settings.dataStore': function(value) {
