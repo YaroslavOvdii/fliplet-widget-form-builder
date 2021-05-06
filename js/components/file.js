@@ -88,7 +88,7 @@ Fliplet.FormBuilder.field('file', {
           };
         });
 
-        $vm.value = newFiles;
+        $vm.value = _.sortBy(newFiles, ['name']);
       }).catch(function() {});
     }
   },
