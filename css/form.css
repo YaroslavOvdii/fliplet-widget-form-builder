@@ -749,6 +749,10 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   right: 0;
 }
 
+.file-holder.editable .no-pointer-events {
+  pointer-events: none;
+}
+
 .image-gallery {
   cursor: pointer;
 }
