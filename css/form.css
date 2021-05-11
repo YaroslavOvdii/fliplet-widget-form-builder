@@ -545,10 +545,6 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
   padding-top: 10px;
 }
 
-.fileUpload span {
-  padding-right: 10px;
-}
-
 .fileUpload .canvas-holder {
   position: relative;
   display: flex;
