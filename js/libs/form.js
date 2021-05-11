@@ -537,8 +537,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
           return Promise.resolve();
         }
 
-        return onFormSubmission()
-        .then(function() {
+        return onFormSubmission().then(function() {
           $vm.isSending = true;
 
           function appendField(name, value) {
