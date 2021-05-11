@@ -49,6 +49,17 @@ Fliplet.FormBuilder.field('file', {
       return _.map(this.value, 'name').join(', ');
     }
   },
+  validations: function() {
+    var rules = {
+      value: {}
+    };
+
+    if (this.required) {
+      rules.value.required = window.validators.required;
+    }
+
+    return rules;
+  },
   created: function() {
     Fliplet.FormBuilder.on('reset', this.onReset);
   },
