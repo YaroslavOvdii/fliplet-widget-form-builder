@@ -518,10 +518,10 @@ Fliplet.Widget.instance('form-builder', function(data) {
                 
                 return resolve();
               })
-              .catch(function(responce) {
-                switch (typeof responce) {
+              .catch(function(response) {
+                switch (typeof response) {
                   case 'string':
-                    return showValidationMessage(responce);
+                    return showValidationMessage(response);
                   default:
                     return reject();
                 }
@@ -529,9 +529,15 @@ Fliplet.Widget.instance('form-builder', function(data) {
           })
         }
 
-        return $vm.isFormValid
-          ? Promise.resolve
-          : onFormInvalid()
+        function onFormSubmission() {
+          if (!$vm.isFormValid) {
+            return onFormInvalid();
+          }
+
+          return Promise.resolve();
+        }
+
+        return onFormSubmission()
         .then(function() {
           $vm.isSending = true;
 
@@ -704,9 +710,6 @@ Fliplet.Widget.instance('form-builder', function(data) {
           //   }));
           // });
         })
-        .catch(function() {
-          // Silent fail
-        });
       },
       loadEntryForUpdate: function(fn) {
         var $vm = this;
