@@ -739,7 +739,7 @@ html[dir="rtl"] .radio.radio-icon input[type="radio"] + label > span.check {
 }
 
 .file-holder.editable .file-icon .fa {
-  color:red;
+  color:#e03629;
   opacity: 0.3;
   font-size: 34px;
   right: 0;

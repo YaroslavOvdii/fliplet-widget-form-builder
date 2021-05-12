@@ -4,8 +4,8 @@
     <li class="file-item" v-for="(file, index) in value" @click="onFileItemClick(file.url)">
       <div class="file-title">\{{ file.name }}</div>
       <div class="file-info">
-        <span class="file-info-uploaded">Uploaded: <b>\{{ showLocalDateFormat(file.createdAt) }}</b></span>
-        <span v-show="file.size" class="file-info-size">&ndash; <b>\{{ humanFileSize(file.size) }}</b></span>
+        <span class="file-info-uploaded">Uploaded: <strong>\{{ showLocalDateFormat(file.createdAt) }}</strong></span>
+        <span v-show="file.size" class="file-info-size">&ndash; <strong>\{{ humanFileSize(file.size) }}</strong></span>
       </div>
       <div class="file-icon">
         <i class="fa fa-angle-right"></i>
@@ -21,10 +21,10 @@
           <div class="file-title" >\{{ file.name }}</div>
           <div class="file-info">
             <span class="file-info-uploaded">
-              <span v-if="file.createdAt">Uploaded: <b>\{{ showLocalDateFormat(file.createdAt) }}</b></span>
+              <span v-if="file.createdAt">Uploaded: <strong>\{{ showLocalDateFormat(file.createdAt) }}</strong></span>
               <span v-else>To be uploaded</span>
             </span>
-            <span v-show="file.size" class="file-info-size">&ndash; <b>\{{ humanFileSize(file.size) }}</b></span>
+            <span v-show="file.size" class="file-info-size">&ndash; <strong>\{{ humanFileSize(file.size) }}</strong></span>
           </div>
         </div>
         <div class="file-icon" @click="removeFile(index)">

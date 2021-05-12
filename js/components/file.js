@@ -50,7 +50,7 @@ Fliplet.FormBuilder.field('file', {
     },
     isValueUrlLink: function() {
       return _.some(this.value, function(value) {
-        return typeof value === 'string' && /v1\/media\/files\/([0-9]+)/.test(value);
+        return typeof value === 'string' && Fliplet.Media.isRemoteUrl(value);
       });
     }
   },
@@ -80,12 +80,9 @@ Fliplet.FormBuilder.field('file', {
         fields: ['name', 'url', 'metadata', 'createdAt']
       }).then(function(files) {
         var newFiles = _.map(files, function(file) {
-          return {
-            name: file.name,
-            createdAt: file.createdAt,
-            url: file.url,
-            size: file.metadata.size
-          };
+          file.size = file.metadata.size;
+
+          return file;
         });
 
         $vm.value = _.sortBy(newFiles, ['name']);
