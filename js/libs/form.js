@@ -708,7 +708,7 @@ Fliplet.Widget.instance('form-builder', function(data) {
           //     return { name: field.name, value: field.value };
           //   }));
           // });
-        })
+        });
       },
       loadEntryForUpdate: function(fn) {
         var $vm = this;
