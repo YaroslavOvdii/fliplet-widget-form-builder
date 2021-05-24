@@ -173,7 +173,7 @@ Fliplet.FormBuilder.field('wysiwyg', {
           'table paste pasteplaintext code'],
       statusbar: false,
       toolbar: this.readonly || $vm.isInterface
-        ? ['bold italic underline alignleft aligncenter alignright alignjustify'].join(' | ')
+        ? false
         : ['bold italic underline | alignleft aligncenter alignright alignjustify',
           'bullist numlist outdent indent | ltr rtl',
           'link | pasteplaintext removeformat | code | formatselect'].join(' | '),
