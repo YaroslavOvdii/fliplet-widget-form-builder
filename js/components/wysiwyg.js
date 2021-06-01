@@ -30,6 +30,12 @@ Fliplet.FormBuilder.field('wysiwyg', {
     },
     isInteract: function() {
       return Fliplet.Env.get('interact');
+    },
+    widgetId: function() {
+      return parseInt(Fliplet.Widget.getDefaultId(), 10);
+    },
+    widgetUuid: function() {
+      return Fliplet.Widget.getUUID(this.widgetId);
     }
   },
   watch: {
@@ -246,8 +252,10 @@ Fliplet.FormBuilder.field('wysiwyg', {
     // Allow custom code to register hooks before this runs
     Fliplet().then(function() {
       Fliplet.Hooks.run('beforeRichFieldInitialize', {
-        field: this,
-        config: config
+        field: $vm,
+        config: config,
+        id: $vm.widgetId,
+        uuid: $vm.widgetUuid
       }).then(function() {
         if (tinymce && !$vm.isInteract) {
           tinymce.init(config);
