@@ -334,7 +334,10 @@
 					return;
 				}
 
-				var replacement = $('<p>' + this.options.delimiter + text + '</p>')[0].firstChild,
+				var replacementText = text 
+					? this.options.delimiter + text
+					: text;
+				var replacement = $('<p>' + replacementText + '</p>')[0].firstChild,
 					focus = $(this.editor.selection.getNode()).offset().top === ($selection.offset().top + (($selection.outerHeight() - $selection.height()) / 2));
 
 				this.editor.dom.replace(replacement, $selection[0]);
@@ -349,10 +352,16 @@
 		offset: function () {
 			var rtePosition = $(this.editor.getContainer()).offset(),
 				contentAreaPosition = $(this.editor.getContentAreaContainer()).position(),
-				nodePosition = $(this.editor.dom.select('span#autocomplete')).position();
+				nodePosition = $(this.editor.dom.select('span#autocomplete')).position(),
+				containerWidth = $(this.editor.getContainer()).width();
+
+			// 160 min-width of the dropdown
+			nodePosition.left = nodePosition.left + 160 >= containerWidth
+				? nodePosition.left - 160
+				: nodePosition.left;
 
 			return {
-				top: rtePosition.top + contentAreaPosition.top + nodePosition.top + $(this.editor.selection.getNode()).innerHeight() - $(this.editor.getDoc()).scrollTop() + 5,
+				top: rtePosition.top + contentAreaPosition.top + nodePosition.top - $(this.editor.getDoc()).scrollTop() + 5,
 				left: rtePosition.left + contentAreaPosition.left + nodePosition.left
 			};
 		},
