@@ -51,6 +51,7 @@
 
 		this.query = '';
 		this.hasFocus = true;
+		this.editorContainerWidth = $(this.editor.getContainer()).width();
 
 		this.renderInput();
 
@@ -91,6 +92,8 @@
 		},
 
 		rteKeyUp: function (e) {
+			this.updateQuery();
+
 			switch (e.which || e.keyCode) {
 				//DOWN ARROW
 				case 40:
@@ -180,9 +183,11 @@
 			}
 		},
 
-		lookup: function () {
-			this.query = $.trim($(this.editor.getBody()).find('#autocomplete-searchtext').text()).replace('\ufeff', '');
+		updateQuery: function () {
+			this.query = $.trim($(this.editor.getBody()).find('#autocomplete-searchtext').text()).replace('\ufeff', '')
+		},
 
+		lookup: function () {
 			if (this.$dropdown === undefined) {
 				this.show();
 			}
@@ -230,7 +235,7 @@
 			var offset = this.editor.inline ? this.offsetInline() : this.offset();
 
 			this.$dropdown = $(this.renderDropdown())
-				.css({ 'top': offset.top, 'left': offset.left });
+				.css({ 'top': offset.top, 'left': offset.left, 'maxWidth':  offset.maxWidth});
 
 			$('body').append(this.$dropdown);
 
@@ -334,10 +339,7 @@
 					return;
 				}
 
-				var replacementText = text 
-					? this.options.delimiter + text
-					: text;
-				var replacement = $('<p>' + replacementText + '</p>')[0].firstChild,
+				var replacement = $('<p>' + text + '</p>')[0].firstChild,
 					focus = $(this.editor.selection.getNode()).offset().top === ($selection.offset().top + (($selection.outerHeight() - $selection.height()) / 2));
 
 				this.editor.dom.replace(replacement, $selection[0]);
@@ -352,17 +354,17 @@
 		offset: function () {
 			var rtePosition = $(this.editor.getContainer()).offset(),
 				contentAreaPosition = $(this.editor.getContentAreaContainer()).position(),
-				nodePosition = $(this.editor.dom.select('span#autocomplete')).position(),
-				containerWidth = $(this.editor.getContainer()).width();
+				nodePosition = $(this.editor.dom.select('span#autocomplete')).position();
 
 			// 160 min-width of the dropdown
-			nodePosition.left = nodePosition.left + 160 >= containerWidth
+			nodePosition.left = nodePosition.left + 160 >= this.editorContainerWidth
 				? nodePosition.left - 160
 				: nodePosition.left;
 
 			return {
 				top: rtePosition.top + contentAreaPosition.top + nodePosition.top - $(this.editor.getDoc()).scrollTop() + 5,
-				left: rtePosition.left + contentAreaPosition.left + nodePosition.left
+				left: rtePosition.left + contentAreaPosition.left + nodePosition.left,
+				maxWidth: this.editorContainerWidth > 640 ? 640 : this.editorContainerWidth 
 			};
 		},
 
@@ -371,7 +373,8 @@
 
 			return {
 				top: nodePosition.top + $(this.editor.selection.getNode()).innerHeight() + 5,
-				left: nodePosition.left
+				left: nodePosition.left,
+				maxWidth: this.editorContainerWidth > 640 ? 640 : this.editorContainerWidth
 			};
 		}
 
@@ -389,14 +392,15 @@
 			autoCompleteData.delimiter = (autoCompleteData.delimiter !== undefined) ? !$.isArray(autoCompleteData.delimiter) ? [autoCompleteData.delimiter] : autoCompleteData.delimiter : ['@'];
 
 			ed.on('input', function (e) {
-				if (e.data === "@") {
-					var delimiterIndex = $.inArray(e.data, autoCompleteData.delimiter);
-					if (delimiterIndex > -1) {
-						if (autoComplete === undefined || (autoComplete.hasFocus !== undefined && !autoComplete.hasFocus)) {
-							e.preventDefault();
-							// Clone options object and set the used delimiter.
-							autoComplete = new AutoComplete(ed, $.extend({}, autoCompleteData, { delimiter: autoCompleteData.delimiter[delimiterIndex] }));
-						}
+				var selection = ed.selection.getSel();
+				var delimiterIndex = $.inArray(e.data, autoCompleteData.delimiter);
+				var showMention = ($(selection.focusNode).text()[selection.focusOffset - 2] === ' ' || selection.focusOffset === 1) && delimiterIndex > -1;
+
+				if (showMention) {
+					if (autoComplete === undefined || (autoComplete.hasFocus !== undefined && !autoComplete.hasFocus)) {
+						e.preventDefault();
+						// Clone options object and set the used delimiter.
+						autoComplete = new AutoComplete(ed, $.extend({}, autoCompleteData, { delimiter: autoCompleteData.delimiter[delimiterIndex] }));
 					}
 				}
 			});
